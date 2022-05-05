@@ -7,20 +7,6 @@ void Greetings()
 {
 	char cStart;
 	do {
-		printf("\t\t       __       _____                   _______            _            __\n");
-		printf("\t\t       \\ \\     |_   _|                 |__   __|          | |          / /\n");
-		printf("\t\t        \\ \\      | |  _ __ ___  _ __      | |_ __ __ _  __| | ___     / / \n");
-		printf("\t\t         \\ \\     | | | '__/ _ \\| '_ \\     | | '__/ _` |/ _` |/ _ \\   / /  \n");
-		printf("\t\t          \\ \\   _| |_| | | (_) | | | |    | | | | (_| | (_| |  __/  / /   \n");
-		printf("\t\t           \\_\\ |_____|_|  \\___/|_| |_|    |_|_|  \\__,_|\\__,_|\\___| /_/    \n\n");
-		printf("\t\t\t\t\t    ---TURN BASED---\n");
-		printf("\t------------------------------------------------------------------------------------------\n");	
-		printf("\t| After being handed the Iron Throne, King Bran of House Stark, decided to devise a      |\n");
-		printf("\t| strategic plan to improve the economic growth of the Six Kingdoms. The Royal Treasury  |\n");
-		printf("\t| currently has 2,000 Golden Dragons (GD) only. To accomplish this task, he instructed   |\n");
-		printf("\t| this Hand, Lord Tyrion Lannister, and his Master of Coin, Lord Bronn of the Blackwater |\n");
-		printf("\t| to go to trade with other kingdoms in Westeros and other free cities in Essos.         |\n");
-		printf("\t------------------------------------------------------------------------------------------\n\n");
 		printf("\t\t\t      |--------------Enter X to continue--------------|\t\t\t\n");
 		printf("\t\t\t\t\t           ");
 		scanf(" %c", &cStart);
