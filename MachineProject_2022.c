@@ -38,7 +38,7 @@ int main(){
 				nSentinel = 0;
 				srand(time(NULL));
 				
-			Options(&nSentinel, &nDefeat, &nPhp, &nPdmg, &nEhp, &nEdmg, &nXP, &nPheal, &nEheal, &nCurrentFloor);
+			Options(&nSentinel, &nDefeat, &nPhp, &nPdmg, &nEhp, &nEdmg, &nPheal, &nEheal, &nXP, &nCurrentFloor);
 				
 			} while (nSentinel == 0);
 
@@ -314,7 +314,7 @@ void Battle (int nDefeat, int *nPhp, int *nEhp, int nPdmg, int nEdmg, int *nXP, 
 	//Shop function should just chance the values for YourMove and EnemyMove
 
 
-	int nCPhp, nCEhp, nCPdmg, nCEdmg, nStrike, nCount = 1, nMphp, nMehp, nCpheal, nCeheal; //Fix heal values
+	int nCPhp, nCEhp, nCPdmg, nCEdmg, nStrike, nCount = 1, nMphp, nMehp, nCpheal, nCeheal; 
 	char cCont;
 
 	nCurrentFloor = 1;
@@ -324,8 +324,8 @@ void Battle (int nDefeat, int *nPhp, int *nEhp, int nPdmg, int nEdmg, int *nXP, 
 	nCEhp = *nEhp;
 	nCPdmg = nPdmg;
 	nCEdmg = nEdmg;
-	nCpheal = 0;
-	nCeheal = 0; 
+	nCpheal = nPheal;
+	nCeheal = nEheal; 
 
 	do {
 		srand(time(NULL));
@@ -338,6 +338,10 @@ void Battle (int nDefeat, int *nPhp, int *nEhp, int nPdmg, int nEdmg, int *nXP, 
 		}
 		*/ //find a way to fix the displau
 		BattleLayout(nCPhp, nCEhp, nCPdmg, nCEdmg, *nXP, nCurrentFloor, nStrike, nCount, nMphp, nMehp);
+		nCPdmg = nPdmg;
+		nCEdmg = nEdmg;
+		nCpheal = nPheal;
+		nCeheal = nEheal;
 		printf("\tYour Move \n\t>");
 		scanf("%d", &nChoice);
 		system("cls");
@@ -351,11 +355,6 @@ void Battle (int nDefeat, int *nPhp, int *nEhp, int nPdmg, int nEdmg, int *nXP, 
 		nCEhp -= nCPdmg;
 		nCPhp += nCpheal;
 		nCEhp += nCeheal;
-
-		nCPdmg = nPdmg;
-		nCEdmg = nEdmg;
-		nCpheal = 0;
-		nCeheal = 0; 
 
 		if (nCPhp < 0) nCPhp = 0;
 		if (nCEhp < 0) nCEhp = 0;
