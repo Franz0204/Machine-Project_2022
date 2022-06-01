@@ -18,16 +18,16 @@ void BattleLayout(int nPhp, int nEhp, int nPdmg, int nEdmg, int nXP, int nCurren
 void Greetings();
 void DisplayItem (int nItemNo);
 void DisplaySide (int nStrike);
-void EnemyMove(int *nEhp, int *nEdmg, int *nEheal);
+void EnemyMove(int *nEhp, int *nEdmg);
 int StrikeFirst(int nCount);
-void YourMove(int *nPhp, int *nPdmg, int *nPheal, int nChoice, int *nDefeat);
-void Battle (int nDefeat, int *nPhp, int *nEhp, int *nPdmg, int *nEdmg, int *nXP, int *nPheal, int *nEheal, int nCurrentFloor);
-void TowerLevel(int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nPheal, int *nEheal, int *nXP, int nCurrentFloor);
+void YourMove(int *nPhp, int *nPdmg, int nChoice, int *nDefeat);
+void Battle (int nDefeat, int *nPhp, int *nEhp, int *nPdmg, int *nEdmg, int *nXP, int nCurrentFloor);
+void TowerLevel(int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nXP, int nCurrentFloor);
 void Store(int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nXP, int nCurrentFloor);
-void Options(int *nSentinel, int *nDefeat, int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nPheal, int *nEheal, int *nXP, int *nCurrentFloor);
+void Options(int *nSentinel, int *nDefeat, int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nXP, int *nCurrentFloor);
 
 int main(){
-	int nSentinel = 0, nDefeat = 0, nRestart = 0, nPhp = 100, nPdmg = 0, nEhp = 100, nEdmg = 0, nPheal = 0, nEheal = 0 , nXP = 10000, nCurrentFloor = 0;
+	int nSentinel = 0, nDefeat = 0, nRestart = 0, nPhp = 100, nPdmg = 0, nEhp = 100, nEdmg = 0, nXP = 10000, nCurrentFloor = 0;
 	char cStart, cConfirm;
 
 		do{
@@ -37,7 +37,7 @@ int main(){
 				nSentinel = 0;
 				srand(time(NULL));
 				
-			Options(&nSentinel, &nDefeat, &nPhp, &nPdmg, &nEhp, &nEdmg, &nXP, &nPheal, &nEheal, &nCurrentFloor);
+			Options(&nSentinel, &nDefeat, &nPhp, &nPdmg, &nEhp, &nEdmg, &nXP, &nCurrentFloor);
 				
 			} while (nSentinel == 0);
 
@@ -235,7 +235,7 @@ void DisplaySide (int nStrike)
 	}
 }
 
-void EnemyMove(int *nEhp, int *nEdmg, int *nEheal){
+void EnemyMove(int *nEhp, int *nEdmg){
 	
 	int Random = 1, i;
 	
@@ -249,7 +249,7 @@ void EnemyMove(int *nEhp, int *nEdmg, int *nEheal){
 				break;
 			
 			case 1:
-				*nEheal = 10;
+				 *nEhp += 10;
 				break;
 			
 			case 2:
@@ -257,7 +257,7 @@ void EnemyMove(int *nEhp, int *nEdmg, int *nEheal){
 				break;
 				
 			case 3:
-			    *nEheal = 10;
+			    *nEhp += 10;
 				break;	
 		}
 }
@@ -281,7 +281,7 @@ int StrikeFirst(int nCount){
 			}
 }
 
-void YourMove(int *nPhp, int *nPdmg, int *nPheal, int nChoice, int *nDefeat){
+void YourMove(int *nPhp, int *nPdmg, int nChoice, int *nDefeat){
 
 		switch (nChoice){
 	
@@ -290,7 +290,7 @@ void YourMove(int *nPhp, int *nPdmg, int *nPheal, int nChoice, int *nDefeat){
 				break;
 			
 			case 1:
-				*nPheal = 10;
+				*nPhp += 10;
 				break;
 			
 			case 2:
@@ -298,7 +298,7 @@ void YourMove(int *nPhp, int *nPdmg, int *nPheal, int nChoice, int *nDefeat){
 				break;
 				
 			case 3:
-				*nPheal = 10;
+				*nPhp += 10;
 				break;
 			
 			case 4:
@@ -307,9 +307,9 @@ void YourMove(int *nPhp, int *nPdmg, int *nPheal, int nChoice, int *nDefeat){
 		}
 }
 
-void Battle (int nDefeat, int *nPhp, int *nEhp, int *nPdmg, int *nEdmg, int *nXP, int *nPheal, int *nEheal, int nCurrentFloor){ 
+void Battle (int nDefeat, int *nPhp, int *nEhp, int *nPdmg, int *nEdmg, int *nXP, int nCurrentFloor){ 
 	
-	int nCPhp, nCEhp, nCPdmg, nCEdmg, nStrike, nCount = 1, nMphp, nMehp, nCpheal, nCeheal;
+	int nCPhp, nCEhp, nCPdmg, nCEdmg, nStrike, nCount = 1, nMphp, nMehp;
 	char cCont;
 
 	nCurrentFloor = 1;
@@ -317,19 +317,17 @@ void Battle (int nDefeat, int *nPhp, int *nEhp, int *nPdmg, int *nEdmg, int *nXP
 	nMehp = *nEhp;
 	nCPhp = *nPhp;
 	nCEhp = *nEhp;
-	nCPdmg = 0;
-	nCEdmg = 0;
-	nCpheal = 0;
-	nCeheal = 0; 
+	nCPdmg = *nPdmg;
+	nCEdmg = *nEdmg;
 
 	do {
 		srand(time(NULL));
-		int nChoice = 0;
+		int nChoice;
 		nStrike = StrikeFirst(nCount);
 	do {
 		if (!(nCount == 1)){
-		YourMove(&nCPhp, &nCPdmg, &nCpheal, nChoice, &nDefeat);
-		EnemyMove(&nCEhp, &nCEdmg, &nCeheal);
+		YourMove(&nCPhp, &nCPdmg, nChoice, &nDefeat);
+		EnemyMove(&nCEhp, &nCEdmg);
 		}
 		BattleLayout(nCPhp, nCEhp, nCPdmg, nCEdmg, *nXP, nCurrentFloor, nStrike, nCount, nMphp, nMehp);
 		printf("\tYour Move \n\t>");
@@ -338,18 +336,14 @@ void Battle (int nDefeat, int *nPhp, int *nEhp, int *nPdmg, int *nEdmg, int *nXP
 		if (nChoice < 0 || nChoice > 4) printf("Warning: Invalid Input \n--------------------------------------\n");
 	} while (!(nChoice >= 0 && nChoice <= 4));
 
-		YourMove(&nCPhp, &nCPdmg, &nCpheal, nChoice, &nDefeat);
-		EnemyMove(&nCEhp, &nCEdmg, &nCeheal);
+		YourMove(&nCPhp, &nCPdmg, nChoice, &nDefeat);
+		EnemyMove(&nCEhp, &nCEdmg);
 					
 		nCPhp -= nCEdmg;
 		nCEhp -= nCPdmg;
-		nCPhp += nCpheal;
-		nCEhp += nCeheal;
 
 		nCPdmg = 0;
 		nCEdmg = 0;
-		nCpheal = 0;
-		nCeheal = 0;
 
 		if (nCPhp < 0) nCPhp = 0;
 		if (nCEhp < 0) nCEhp = 0;
@@ -414,7 +408,7 @@ void Battle (int nDefeat, int *nPhp, int *nEhp, int *nPdmg, int *nEdmg, int *nXP
 	} while (nDefeat == 0);
 }
 
-void TowerLevel(int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nPheal, int *nEheal, int *nXP, int nCurrentFloor)
+void TowerLevel(int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nXP, int nCurrentFloor)
 {
 	int nDefeat = 0;
 	int nChoice = 0;
@@ -434,7 +428,7 @@ void TowerLevel(int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nPheal, int *
 	        case 3: 
 	        case 4: 
 	        case 5: 
-	        case 6: system("cls"); Battle(nDefeat, nPhp, nEhp, nPdmg, nEdmg, nXP, nPheal, nEheal, nCurrentFloor); break; 
+	        case 6: system("cls"); Battle(nDefeat, nPhp, nEhp, nPdmg, nEdmg, nXP, nCurrentFloor); break; 
 	        case 7: system("cls"); break;	       
     }
 }
@@ -523,7 +517,7 @@ void Store(int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nXP, int nCurrentF
 } 
 
 
-void Options(int *nSentinel, int *nDefeat, int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nPheal, int *nEheal, int *nXP, int *nCurrentFloor)
+void Options(int *nSentinel, int *nDefeat, int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nXP, int *nCurrentFloor)
 {
 	char cOptions;
 	
@@ -539,7 +533,7 @@ void Options(int *nSentinel, int *nDefeat, int *nPhp, int *nPdmg, int *nEhp, int
 	
 	switch(cOptions) {
         case 'B': 
-        case 'b': system("cls"); TowerLevel(nPhp, nPdmg, nEhp, nEdmg, nPheal, nEheal, nXP, *nCurrentFloor); break;
+        case 'b': system("cls"); TowerLevel(nPhp, nPdmg, nEhp, nEdmg, nXP, *nCurrentFloor); break;
         case 'S': 
         case 's': system("cls"); Store(nPhp, nPdmg, nEhp, nEdmg, nXP, *nCurrentFloor); break;
         case 'M': 
