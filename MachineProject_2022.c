@@ -5,40 +5,45 @@
 #define Turn rand() % 4
 #define Hit rand() % 2
 
-//To Do: levels
+//To Do: - Tower Level 
 
 void Tower();
 void Map();
 void Shop();
 void Levels();
 void StoreItems();
-void BattleChoices(int nPhp, int nEhp, int nPdmg, int nEdmg, int nStrike, int nCount);
-void DisplayStats(int nXP, int nCurrentFloor);
-void BattleLayout(int nPhp, int nEhp, int nPdmg, int nEdmg, int nXP, int nCurrentFloor, int nStrike, int nCount, int nMphp, int nMehp);
+void BattleChoices(int nPhp, int nEhp, int nPdmg, int nEdmg, int nPheal, int nEheal, int nStrike, int nCount);
+void DisplayStats(int nLevel, int nXP, int nTxp, int nCurrentFloor);
+void DisplayMoves(int nPhp, int nPdmg, int nEhp, int nEdmg, int nHv, int nDMGv, int nDMGv2, int nHvP, int nDMGvP);
+void BattleLayout(int nPhp, int nEhp, int nPdmg, int nEdmg, int nLevel, int nXP, int nTxp, int nCurrentFloor, int nStrike, int nCount, int nMphp, int nMehp, int nPheal, int nEheal);
 void Greetings();
 void DisplayItem (int nItemNo);
-void DisplaySide (int nStrike);
 void EnemyMove(int *nEhp, int *nEdmg, int *nEheal);
+void YourMove(int *nCPhp, int nPhp, int *nPdmg, int *nPheal, int *nHv, int *nDMGv, int *nDMGv2, int *nHvP, int *nDMGvP, int nChoice, int *nDefeat);
 int StrikeFirst(int nCount);
-void YourMove(int *nPhp, int *nPdmg, int *nPheal, int nChoice, int *nDefeat);
-void Battle (int nDefeat, int *nPhp, int *nEhp, int nPdmg, int nEdmg, int *nXP, int nPheal, int nEheal, int nCurrentFloor);
-void TowerLevel(int *nPhp, int nPdmg, int *nEhp, int nEdmg, int nPheal, int nEheal, int *nXP, int nCurrentFloor);
-void Store(int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nXP, int nCurrentFloor);
-void Options(int *nSentinel, int *nDefeat, int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nPheal, int *nEheal, int *nXP, int *nCurrentFloor);
+void LevelUp(int *nPhp, int nTxp, int *nLevel);
+void Battle (int nDefeat, int *nPhp, int *nEhp, int nPdmg, int nEdmg, int *nLevel, int *nXP, int *nTxp, int nPheal, int nEheal, int nHv, int nDMGv, int nDMGv2, int nHvP, int nDMGvP, int nCurrentFloor);
+void TowerLevel(int *nPhp, int nPdmg, int *nEhp, int nEdmg, int nPheal, int nEheal, int nHv, int nDMGv, int nDMGv2, int nHvP, int nDMGvP, int *nLevel, int *nXP, int *nTxp, int nCurrentFloor);
+void Store(int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nHv, int *nDMGv, int *nDMGv2, int *nHvP, int *nDMGvP, int nLevel, int *nXP, int nTxp, int nCurrentFloor);
+void Moves(int nPhp, int nPdmg, int nEhp, int nEdmg, int nHv, int nDMGv, int nDMGv2, int nHvP, int nDMGvP, int nLevel, int nXP, int nTxp, int nCurrentFloor);
+void Options(int *nSentinel, int *nDefeat, int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nPheal, int *nEheal, int *nHv, int *nDMGv, int *nDMGv2, int *nHvP, int *nDMGvP, int *nLevel, int *nXP, int *nTxp, int *nCurrentFloor);
 
 int main(){
-	int nSentinel = 0, nDefeat = 0, nRestart = 0, nPhp = 100, nPdmg = 0, nEhp = 100, nEdmg = 0, nPheal = 0, nEheal = 0, nCurrentFloor = 0;
-	int nXP = 10000;
-	char cStart, cConfirm;
+
+	int nRestart = 0;
 
 		do{
+			int nSentinel = 0, nDefeat = 0, nLevel = 1, nPhp = 100, nPdmg = 0, nEhp = 100, nEdmg = 0, nPheal = 0, nEheal = 0, nCurrentFloor = 0, nXP = 2900,
+		 		nTxp = 2900, nHv = 10, nDMGv = 25, nDMGv2 = 50, nHvP = 10, nDMGvP = 15; //Remove Enemy varaiables
+			char cStart, cConfirm;
+		
 			Greetings();
 			do {
 				nDefeat = 0;
 				nSentinel = 0;
 				srand(time(NULL));
 				
-			Options(&nSentinel, &nDefeat, &nPhp, &nPdmg, &nEhp, &nEdmg, &nPheal, &nEheal, &nXP, &nCurrentFloor);
+				Options(&nSentinel, &nDefeat, &nPhp, &nPdmg, &nEhp, &nEdmg, &nPheal, &nEheal, &nHv, &nDMGv, &nDMGv2, &nHvP, &nDMGvP, &nLevel, &nXP, &nTxp, &nCurrentFloor);
 				
 			} while (nSentinel == 0);
 
@@ -119,9 +124,8 @@ void Levels()
 void StoreItems()
 {
 	Shop();
-	printf("~What do you wish to upgrade?\n");
 	printf("------------------------------------------------------------------------------------\n");
-	printf("\t-Upgrades-\n\n");
+	printf("\t-Upgrades-			~What do you wish to upgrade?\n\n");
 	printf("\t[1] Healing\n");
 	printf("\t[2] Self Buffs\n");
 	printf("\t[3] Attacking 1\n");
@@ -129,13 +133,16 @@ void StoreItems()
 	printf("\t[5] Quit\n");
 }
 
-void BattleChoices(int nPhp, int nEhp, int nPdmg, int nEdmg, int nStrike, int nCount)
+void BattleChoices(int nPhp, int nEhp, int nPdmg, int nEdmg, int nPheal, int nEheal, int nStrike, int nCount)
 {
+	int nCheck = nStrike == 1;
+	int nCheck2 = nPdmg == 0;
+	int nCheck3 = nEdmg == 0;
 	if (!(nCount == 1)){
 		printf("------------------------------------------------------------------------------------\n");
-		printf("\t[1] Heal				Turn %d: >You did %d DMG to the Enemy!\n", nCount, nPdmg);
-		printf("\t[2] Buff			   		>Enemy did %d DMG to you!\n", nEdmg);
-		printf("\t[3] Attack           	                        >");DisplaySide(nStrike); printf(" striked first!\n");
+		printf("\t[1] Heal				Turn %d: >Your monster %s %d units to %s!\n", nCount, nCheck2 ? "healed" : "dealth", nCheck2 ? nPheal : nPdmg, nCheck2 ? "itself" : "the Enemy");
+		printf("\t[2] Buff			   		>Enemy's monster %s %d units to %s!\n", nCheck3 ? "healed" : "dealth" , nCheck3 ? nEheal : nEdmg, nCheck3 ? "itself" : "to you");
+		printf("\t[3] Attack           	                        >%s striked first!\n",nCheck ? "Enemy" : "You");
 		printf("\t[4] Attack									  \n\n");
 		printf("\t[0] Exit\n");
 	}
@@ -149,15 +156,28 @@ void BattleChoices(int nPhp, int nEhp, int nPdmg, int nEdmg, int nStrike, int nC
 	}
 }
 
-void DisplayStats(int nXP, int nCurrentFloor)
+void DisplayStats(int nLevel, int nXP, int nTxp, int nCurrentFloor)
 {
 	printf("------------------------------------------------------------------------------------\n");
-	printf("\tTotal XP: %d\t\t\n", nXP);
+	printf("\tLevel: %d\t\t\n", nLevel);
+	printf("\tXP: %d\t\t\n", nXP);
+	printf("\tTotal XP: %d\t\t\n", nTxp);
 	printf("\tCurrent Floor: Level %d\t\t\n", nCurrentFloor);
 	printf("------------------------------------------------------------------------------------\n");
-}  
+}
 
-void BattleLayout(int nPhp, int nEhp, int nPdmg, int nEdmg, int nXP, int nCurrentFloor, int nStrike, int nCount, int nMphp, int nMehp)
+void DisplayMoves(int nPhp, int nPdmg, int nEhp, int nEdmg, int nHv, int nDMGv, int nDMGv2, int nHvP, int nDMGvP)
+{
+	int nDemerit = nPhp * 0.25;
+
+	printf("\t[1] Healing: Heal: %d\n", nHv);
+	printf("\t[2] Self Buffs: +Heal: %d | +DMG: %d \n", nHvP, nDMGvP);
+	printf("\t[3] Attacking 1: DMG: %d\n", nDMGv);
+	printf("\t[4] Attacking 2: DMG: %d  | -HP: %d \n", nDMGv2, nDemerit);
+	printf("------------------------------------------------------------------------------------\n");
+}
+
+void BattleLayout(int nPhp, int nEhp, int nPdmg, int nEdmg, int nLevel, int nXP, int nTxp, int nCurrentFloor, int nStrike, int nCount, int nMphp, int nMehp, int nPheal, int nEheal)
 {
 	printf("\t\t\t __  _      ____           .     .     .          / /     _   __\n");
 	printf("\t\t\t |  /       /   \\    ___  _/_   _/_    |     ___  | |      \\   |\n");
@@ -172,8 +192,8 @@ void BattleLayout(int nPhp, int nEhp, int nPdmg, int nEdmg, int nXP, int nCurren
 	printf("\t|                                                                                            |\n");
 	printf("\t       HP: %d/%d                                                                           \n", nPhp, nMphp);
 	printf("\t|____________________________________________________________________________________________|\n");
-	BattleChoices(nPhp, nEhp, nPdmg, nEdmg, nStrike, nCount);
-	DisplayStats(nXP, nCurrentFloor);
+	BattleChoices(nPhp, nEhp, nPdmg, nEdmg, nPheal, nEheal, nStrike, nCount);
+	DisplayStats(nLevel, nXP, nTxp, nCurrentFloor);
 }
 
 void Greetings()
@@ -222,20 +242,6 @@ void DisplayItem (int nItemNo)
 	}
 }
 
-void DisplaySide (int nStrike)
-{
-	switch(nStrike){
-			
-		case 1: 
-			printf("Enemy");
-			break;
-		
-		case 2:
-			printf("You");
-			break;
-	}
-}
-
 void EnemyMove(int *nEhp, int *nEdmg, int *nEheal){
 	
 	int Random = 1, i;
@@ -263,6 +269,34 @@ void EnemyMove(int *nEhp, int *nEdmg, int *nEheal){
 		}
 }
 
+void YourMove(int *nCPhp, int nPhp, int *nPdmg, int *nPheal, int *nHv, int *nDMGv, int *nDMGv2, int *nHvP, int *nDMGvP, int nChoice, int *nDefeat){
+
+		switch (nChoice){
+	
+			case 0:
+				*nDefeat = 1;
+				break;
+			
+			case 1:
+				*nPheal += *nHv;
+				break;
+			
+			case 2:
+				*nHv += *nHvP; // make a new varaible for adding HV and DMGv
+				*nDMGv += *nDMGvP;
+				break;
+				
+			case 3:
+				*nPdmg += *nDMGv; 
+				break;
+			
+			case 4:
+				*nPdmg += *nDMGv2; //make new value where it deals more but u hurt yourself | Hurtyourself  = different variable 
+				*nCPhp -= nPhp * 0.25;
+				break;		
+		}
+}
+
 int StrikeFirst(int nCount){
 	
 	int Random, i;
@@ -282,37 +316,34 @@ int StrikeFirst(int nCount){
 			}
 }
 
-void YourMove(int *nPhp, int *nPdmg, int *nPheal, int nChoice, int *nDefeat){
+void LevelUp(int *nPhp, int nTxp, int *nLevel){
 
-		switch (nChoice){
-	
-			case 0:
-				*nDefeat = 1;
-				break;
-			
-			case 1:
-				*nPheal = 10;
-				break;
-			
-			case 2:
-				*nPdmg = 25;
-				break;
-				
-			case 3:
-				*nPheal = 10; //10 should be changed into a variable so shop can easily increase it
-				break;
-			
-			case 4:
-				*nPdmg = 25;
-				break;		
-		}
+	char cCont;
+
+	if (nTxp >= 3000 * *nLevel){
+
+		do{
+			*nLevel += 1;
+			*nPhp += 25;
+			printf(".      .                           .        .     .             /      .\n");
+			printf(" |      /       ___  _   __   ___   |        /     / \\,___,      |      |\n");
+			printf(" |      |     .'   ` |   /  .'   `  |        |     | |    \\      |      |\n");
+			printf(" |      |     |----' `  /   |----'  |        |     | |    |      |      |\n");
+			printf(" |      /---/ `.___,  \\/    `.___, /\\__       `._.'  |`---'      `      |\n");
+			printf(" `                                                   \\           '      `\n");
+			printf("------------------------------------------------------------------------------------\n");
+			printf("\t\tLevel [%d]\n\t\t+25 HP\n", *nLevel);
+			printf("\n\t\tInput X to continue \n");
+			printf("\n\t\t>");
+			scanf(" %c", &cCont);
+			system("cls");
+		} while(cCont != 'X' && cCont != 'x' );
+
+	}
+
 }
 
-void Battle (int nDefeat, int *nPhp, int *nEhp, int nPdmg, int nEdmg, int *nXP, int nPheal, int nEheal, int nCurrentFloor){ 
-	
-	//Remove paramters for Dmg and heal
-	//Shop function should just chance the values for YourMove and EnemyMove
-
+void Battle (int nDefeat, int *nPhp, int *nEhp, int nPdmg, int nEdmg, int *nLevel, int *nXP, int *nTxp, int nPheal, int nEheal, int nHv, int nDMGv, int nDMGv2, int nHvP, int nDMGvP, int nCurrentFloor){ 
 
 	int nCPhp, nCEhp, nCPdmg, nCEdmg, nStrike, nCount = 1, nMphp, nMehp, nCpheal, nCeheal; 
 	char cCont;
@@ -332,13 +363,8 @@ void Battle (int nDefeat, int *nPhp, int *nEhp, int nPdmg, int nEdmg, int *nXP, 
 		int nChoice = 0;
 		nStrike = StrikeFirst(nCount);
 	do {
-		/*if (!(nCount == 1)){
-		YourMove(&nCPhp, &nCPdmg, nChoice, &nDefeat);
-		EnemyMove(&nCEhp, &nCEdmg);
-		}
-		*/ //find a way to fix the displau
-		BattleLayout(nCPhp, nCEhp, nCPdmg, nCEdmg, *nXP, nCurrentFloor, nStrike, nCount, nMphp, nMehp);
-		nCPdmg = nPdmg;
+		BattleLayout(nCPhp, nCEhp, nCPdmg, nCEdmg, *nLevel, *nXP, *nTxp, nCurrentFloor, nStrike, nCount, nMphp, nMehp, nCpheal, nCeheal);
+		nCPdmg = nPdmg; //Resets the values
 		nCEdmg = nEdmg;
 		nCpheal = nPheal;
 		nCeheal = nEheal;
@@ -348,13 +374,12 @@ void Battle (int nDefeat, int *nPhp, int *nEhp, int nPdmg, int nEdmg, int *nXP, 
 		if (nChoice < 0 || nChoice > 4) printf("Warning: Invalid Input \n--------------------------------------\n");
 	} while (!(nChoice >= 0 && nChoice <= 4));
 
-		YourMove(&nCPhp, &nCPdmg, &nCpheal, nChoice, &nDefeat);
+		YourMove(&nCPhp, *nPhp, &nCPdmg, &nCpheal, &nHv, &nDMGv, &nDMGv2, &nHvP, &nDMGvP, nChoice, &nDefeat);
 		EnemyMove(&nCEhp, &nCEdmg, &nCeheal);
 					
 		nCPhp -= nCEdmg;
 		nCEhp -= nCPdmg;
-		nCPhp += nCpheal;
-		nCEhp += nCeheal;
+		nCount++;
 
 		if (nCPhp < 0) nCPhp = 0;
 		if (nCEhp < 0) nCEhp = 0;
@@ -366,9 +391,10 @@ void Battle (int nDefeat, int *nPhp, int *nEhp, int nPdmg, int nEdmg, int *nXP, 
 			case 1:
 				if (nCPhp <= 0 || nDefeat == 1) {
 					do {
-						BattleLayout(nCPhp, nCEhp, nCPdmg, nCEdmg, *nXP, nCurrentFloor, nStrike, nCount, nMphp, nMehp);
+						BattleLayout(nCPhp, nCEhp, nCPdmg, nCEdmg, *nLevel, *nXP, *nTxp, nCurrentFloor, nStrike, nCount, nMphp, nMehp, nCpheal, nCeheal);
 						printf("\n\t\tEnemy Wins");
 						printf("\n\t\tInput X to continue \n");
+						printf("\n\t\t>");
 						scanf(" %c", &cCont);
 						system("cls");
 					} while(cCont != 'X' && cCont != 'x' );
@@ -378,10 +404,12 @@ void Battle (int nDefeat, int *nPhp, int *nEhp, int nPdmg, int nEdmg, int *nXP, 
 				else if (nCEhp <= 0){
 					do {
 						*nXP += 100;
-						BattleLayout(nCPhp, nCEhp, nCPdmg, nCEdmg, *nXP, nCurrentFloor, nStrike, nCount, nMphp, nMehp);
+						*nTxp += 100;
+						BattleLayout(nCPhp, nCEhp, nCPdmg, nCEdmg, *nLevel, *nXP, *nTxp, nCurrentFloor, nStrike, nCount, nMphp, nMehp, nCpheal, nCeheal);
 						printf("\n\t\tYou Win!");
 						printf("\n\t\t+100XP!");
 						printf("\n\t\tInput X to continue \n");
+						printf("\n\t\t>");
 						scanf(" %c", &cCont);
 						system("cls");
 					} while(cCont != 'X' && cCont != 'x' );
@@ -393,10 +421,12 @@ void Battle (int nDefeat, int *nPhp, int *nEhp, int nPdmg, int nEdmg, int *nXP, 
 				if (nCEhp <= 0){
 					do {
 						*nXP += 100;
-						BattleLayout(nCPhp, nCEhp, nCPdmg, nCEdmg, *nXP, nCurrentFloor, nStrike, nCount, nMphp, nMehp);
+						*nTxp += 100;
+						BattleLayout(nCPhp, nCEhp, nCPdmg, nCEdmg, *nLevel, *nXP, *nTxp, nCurrentFloor, nStrike, nCount, nMphp, nMehp, nCpheal, nCeheal);
 						printf("\n\t\tYou Win!");
 						printf("\n\t\t+100XP!");
 						printf("\n\t\tInput X to continue \n");
+						printf("\n\t\t>");
 						scanf(" %c", &cCont);
 						system("cls");
 					} while(cCont != 'X' && cCont != 'x' );
@@ -405,9 +435,10 @@ void Battle (int nDefeat, int *nPhp, int *nEhp, int nPdmg, int nEdmg, int *nXP, 
 
 				else if (nCPhp <= 0 || nDefeat == 1) {
 					do {
-						BattleLayout(nCPhp, nCEhp, nCPdmg, nCEdmg, *nXP, nCurrentFloor, nStrike, nCount, nMphp, nMehp);
+						BattleLayout(nCPhp, nCEhp, nCPdmg, nCEdmg, *nLevel, *nXP, *nTxp, nCurrentFloor, nStrike, nCount, nMphp, nMehp, nCpheal, nCeheal);
 						printf("\n\t\tEnemy Wins");
 						printf("\n\t\tInput X to continue \n");
+						printf("\n\t\t>");
 						scanf(" %c", &cCont);
 						system("cls");
 					} while(cCont != 'X' && cCont != 'x' );
@@ -415,11 +446,15 @@ void Battle (int nDefeat, int *nPhp, int *nEhp, int nPdmg, int nEdmg, int *nXP, 
 				}
 				break;
 		}
-		nCount++;
+		nCPhp += nCpheal;
+		nCEhp += nCeheal;
 	} while (nDefeat == 0);
-}
 
-void TowerLevel(int *nPhp, int nPdmg, int *nEhp, int nEdmg, int nPheal, int nEheal, int *nXP, int nCurrentFloor)
+	LevelUp(nPhp, *nTxp, nLevel);
+
+}
+ 
+void TowerLevel(int *nPhp, int nPdmg, int *nEhp, int nEdmg, int nPheal, int nEheal, int nHv, int nDMGv, int nDMGv2, int nHvP, int nDMGvP, int *nLevel, int *nXP, int *nTxp, int nCurrentFloor)
 {
 	int nDefeat = 0;
 	int nChoice = 0;
@@ -427,7 +462,7 @@ void TowerLevel(int *nPhp, int nPdmg, int *nEhp, int nEdmg, int nPheal, int nEhe
 	do {
 		system("cls");
 		Levels();
-		DisplayStats(*nXP, nCurrentFloor);
+		DisplayStats(*nLevel, *nXP, *nTxp, nCurrentFloor);
 		printf("Choose a Level"); 
 		printf("---> ");
 		scanf("%d", &nChoice);
@@ -439,12 +474,12 @@ void TowerLevel(int *nPhp, int nPdmg, int *nEhp, int nEdmg, int nPheal, int nEhe
 	        case 3: 
 	        case 4: 
 	        case 5: 
-	        case 6: system("cls"); Battle(nDefeat, nPhp, nEhp, nPdmg, nEdmg, nXP, nPheal, nEheal, nCurrentFloor); break; 
+	        case 6: system("cls"); Battle(nDefeat, nPhp, nEhp, nPdmg, nEdmg, nLevel, nXP, nTxp, nPheal, nEheal, nHv, nDMGv, nDMGv2, nHvP, nDMGvP, nCurrentFloor); break; 
 	        case 7: system("cls"); break;	       
     }
 }
 
-void Store(int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nXP, int nCurrentFloor)
+void Store(int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nHv, int *nDMGv, int *nDMGv2, int *nHvP, int *nDMGvP, int nLevel, int *nXP, int nTxp, int nCurrentFloor)
 {
 	int nItemNo = 0, nBuy = 0, nPrice = 0;;
 	char cConfirm;
@@ -452,7 +487,7 @@ void Store(int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nXP, int nCurrentF
     do {
         do {
         	StoreItems();
-			DisplayStats(*nXP, nCurrentFloor);
+			DisplayStats(nLevel, *nXP, nTxp, nCurrentFloor);
         	printf("What Upgrade will you buy: ");
             	scanf("%d", &nItemNo);
 			if (nItemNo != 5){
@@ -487,7 +522,7 @@ void Store(int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nXP, int nCurrentF
 		if (*nXP >= nPrice) {
 			do {
      		StoreItems();
-			DisplayStats(*nXP, nCurrentFloor);
+			DisplayStats(nLevel, *nXP, nTxp, nCurrentFloor);
 				printf("What Item will you buy: %d\n", nItemNo);
         		printf("How many will you buy: %d\n\n", nBuy);
 				printf("You are upgrading ");
@@ -504,19 +539,20 @@ void Store(int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nXP, int nCurrentF
 				switch(nItemNo){
 			
 					case 1: 
-						*nPhp += nBuy * 10;
+						*nHv += nBuy * 10;
 						break;
 		
 					case 2:
-						*nPdmg += nBuy * 10;
+						*nDMGvP += nBuy * 15;
+						*nHvP += nBuy * 10;
 						break;
 		
 					case 3: 
-						*nPhp += nBuy * 10;
+						*nDMGv += nBuy * 15;
 						break;
 		
 					case 4:
-						*nPdmg += nBuy * 10;
+						*nDMGv2 += nBuy * 20;//bigger attack but demerits your next attak
 						break;
 				}	
 	  	   		*nXP -= nPrice;
@@ -527,15 +563,32 @@ void Store(int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nXP, int nCurrentF
 	} while (nItemNo != 5);
 } 
 
+void Moves(int nPhp, int nPdmg, int nEhp, int nEdmg, int nHv, int nDMGv, int nDMGv2, int nHvP, int nDMGvP, int nLevel, int nXP, int nTxp, int nCurrentFloor){
+	char cChoice;
+	 
+	do {
+	printf(" __   __                                 \n");
+	printf(" |    |    __.  _   __   ___    ____     \n");
+	printf(" |\\  /|  .'   \\ |   /  .'   `  (         \n");
+	printf(" | \\/ |  |    | `  /   |----'  `--.      \n");
+	printf(" /    /   `._.'  \\/    `.___, \\___.'     \n");
+		DisplayStats(nLevel, nXP, nTxp, nCurrentFloor);
+		DisplayMoves(nPhp, nPdmg, nEhp, nEdmg, nHv, nDMGv, nDMGv2, nHvP, nDMGvP);
+		printf("\nPress [X] to go back\n");
+		printf("--->");
+		scanf(" %c", &cChoice);
+		system("cls");
+	} while (cChoice != 'X' && cChoice != 'x');
+}
 
-void Options(int *nSentinel, int *nDefeat, int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nPheal, int *nEheal, int *nXP, int *nCurrentFloor)
+void Options(int *nSentinel, int *nDefeat, int *nPhp, int *nPdmg, int *nEhp, int *nEdmg, int *nPheal, int *nEheal, int *nHv, int *nDMGv, int *nDMGv2, int *nHvP, int *nDMGvP, int *nLevel, int *nXP, int *nTxp, int *nCurrentFloor)
 {
 	char cOptions;
 	
 	do {
 		system("cls");
 		Map();
-		DisplayStats(*nXP, *nCurrentFloor);
+		DisplayStats(*nLevel, *nXP, *nTxp, *nCurrentFloor);
 		printf("[B]attle\t[S]tore\t\t[M]oves\t\t[Q]uit\n\n"); 
 		printf("---> ");
 			scanf(" %c", &cOptions);
@@ -544,12 +597,12 @@ void Options(int *nSentinel, int *nDefeat, int *nPhp, int *nPdmg, int *nEhp, int
 	
 	switch(cOptions) {
         case 'B': 
-        case 'b': system("cls"); TowerLevel(nPhp, *nPdmg, nEhp, *nEdmg, *nPheal, *nEheal, nXP, *nCurrentFloor); break;
+        case 'b': system("cls"); TowerLevel(nPhp, *nPdmg, nEhp, *nEdmg, *nPheal, *nEheal, *nHv, *nDMGv, *nDMGv2, *nHvP, *nDMGvP, nLevel, nXP, nTxp, *nCurrentFloor); break;
         case 'S': 
-        case 's': system("cls"); Store(nPhp, nPdmg, nEhp, nEdmg, nXP, *nCurrentFloor); break;
+        case 's': system("cls"); Store(nPhp, nPdmg, nEhp, nEdmg, nHv, nDMGv, nDMGv2, nHvP, nDMGvP, *nLevel, nXP, *nTxp, *nCurrentFloor); break;
         case 'M': 
-        case 'm': system("cls"); *nSentinel = 1; break;
+        case 'm': system("cls"); Moves(*nPhp, *nPdmg, *nEhp, *nEdmg, *nHv, *nDMGv, *nDMGv2, *nHvP, *nDMGvP, *nLevel, *nXP, *nTxp, *nCurrentFloor); break;
         case 'Q': 
-        case 'q':system("cls"); *nSentinel = 1; break;
+        case 'q': system("cls"); *nSentinel = 1; break;
     }
 }
