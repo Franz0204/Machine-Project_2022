@@ -39,8 +39,8 @@ int main(){
 	int nRestart = 0;
 
 		do{
-			int nSentinel = 0, nDefeat = 0, nLevel = 1, nPhp = 100, nPdmg = 0, nPheal = 0, nCurrentFloor = 6, nXP = 1000000000,
-		 		nTxp = 1000000000, nHv = 10, nDMGv = 25, nDMGv2 = 50, nHvP = 10, nDMGvP = 15; //Remove Enemy varaiables
+			int nSentinel = 0, nDefeat = 0, nLevel = 1, nPhp = 100, nPdmg = 0, nPheal = 0, nCurrentFloor = 1, nXP = 100,
+		 		nTxp = 100, nHv = 10, nDMGv = 25, nDMGv2 = 50, nHvP = 10, nDMGvP = 15; 
 		
 			Greetings();
 			do {
@@ -486,7 +486,7 @@ void LevelUp(int *nPhp, int nTxp, int *nLevel){
 	char cCont;
 
 	if (nTxp >= 3000 * *nLevel){
-
+		system("cls");
 		do{
 			*nLevel += 1;
 			*nPhp += 25;
